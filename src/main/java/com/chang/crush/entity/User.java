@@ -1,5 +1,8 @@
 package com.chang.crush.entity;
 
+/**
+ * 用户bean
+ */
 public class User {
     private Long id;
     private String name;
