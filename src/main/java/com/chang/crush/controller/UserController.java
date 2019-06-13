@@ -1,9 +1,14 @@
 package com.chang.crush.controller;
 
 import com.chang.crush.entity.User;
+import com.chang.crush.entity.UserDto;
+import com.chang.crush.entity.UserXml;
+import com.chang.crush.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -12,14 +17,17 @@ import java.util.*;
 @RequestMapping(value = "/users")
 public class UserController {
 
+    @Autowired
+    private UserService userSerivce;
+
     private static Map<Long, User> users = Collections.synchronizedMap(new HashMap<Long, User>());
 
-    @ApiOperation(value="获取用户列表", notes="")
+    @ApiOperation(value="获取用户列表", notes="获取用户列表")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<User> getUserList() {
         // 处理"/users/"的GET请求，用来获取用户列表
         // 还可以通过@RequestParam从页面中传递参数来进行查询条件或者翻页信息的传递
-        return new ArrayList<User>(users.values());
+        return new ArrayList<>(users.values());
     }
 
     @ApiOperation(value="创建用户", notes="根据User对象创建用户")
@@ -63,5 +71,28 @@ public class UserController {
         // 处理"/users/{id}"的DELETE请求，用来删除User
         users.remove(id);
         return "success";
+    }
+
+    @PostMapping("/testLocalDate")
+    public UserDto testLocalDate(@RequestBody UserDto userDto) {
+        System.out.println(userDto.getBirthday());
+        return userDto;
+    }
+
+    @PostMapping(value = "/userXml",
+            consumes = MediaType.APPLICATION_XML_VALUE,
+            produces = MediaType.APPLICATION_XML_VALUE)
+    public UserXml create(@RequestBody UserXml user) {
+        user.setName("chang.com : " + user.getName());
+        user.setAge(user.getAge() + 100);
+        System.out.println("接受返回均是XML");
+        return user;
+    }
+
+    @GetMapping("/getDataBase")
+    public List<Map<String,Object>> getDataBase(){
+        List<Map<String,Object>> list = userSerivce.getSecond();
+        System.out.println(list);
+        return userSerivce.getUser();
     }
 }

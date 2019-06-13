@@ -1,5 +1,8 @@
-package com.chang.crush;
+package com.chang.crush.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -35,5 +38,17 @@ public class Swagger2 {
                 .contact("changCoder")
                 .version("1.0")
                 .build();
+    }
+
+    /**
+     * 目的是为了解决jdk1.8 LocalDate问题
+     * @return
+     */
+    @Bean
+    public ObjectMapper serializingObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
     }
 }

@@ -10,4 +10,5 @@ public class CrushApplication {
 		SpringApplication.run(CrushApplication.class, args);
 	}
 
+
 }

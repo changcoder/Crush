@@ -1,18 +1,13 @@
 package com.chang.crush.entity;
 
-/**
- * 用户bean
- */
-public class User {
-    private Long id;
+//@JacksonXmlRootElement(localName = "User")
+public class UserXml {
+
+    //@JacksonXmlProperty(localName = "name")
     private String name;
+
+    //@JacksonXmlProperty(localName = "age")
     private Integer age;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) { this.id = id; }
 
     public String getName() {
         return name;
